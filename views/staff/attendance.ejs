@@ -1,0 +1,44 @@
+<%- include('../includes/head.ejs') %>
+
+    <%- include('../includes/navigation.ejs') %>
+        <div class="attendance">
+            <main class="container ">
+
+                <h1 class="text-danger font-italic"> Đang làm việc ... </h1>
+                <p>
+                    <span class="text-secondary font-italic">Họ và tên : </span>
+                    <span class="font-weight-bold">
+                        <%= staffName %>
+                    </span>
+
+                </p>
+                <p>
+                    <span class="text-secondary font-italic">Nơi làm việc : </span>
+                    <span class="font-weight-bold">
+                        <% if(workTime.workSpace==='company' ){ %>
+                            Công ty
+                            <% } else if(workTime.workSpace==='home' ){ %>
+                                Nhà
+                                <% }else{ %>
+                                    Khách hàng
+                                    <% } %>
+                    </span>
+                </p>
+                <p>
+                    <span class="text-secondary font-italic">Thời gian bắt đầu : </span>
+                    <span class="font-weight-bold">
+                        <%= moment(workTime.startTime).format('DD/MM/YYYY, h:mm A') %>
+                    </span>
+                </p>
+
+                <form action="/attendance" method="post">
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <button class="btn btn-danger " type="submit">KẾT THÚC LÀM VIỆC</button>
+                </form>
+
+
+            </main>
+        </div>
+
+        <%- include('../includes/end.ejs') %>
+            </body>

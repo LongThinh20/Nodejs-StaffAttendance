@@ -1,0 +1,26 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navigation.ejs') %>
+        <main class="container">
+
+            <!-- Nav pills -->
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="btn btn_info nav-link active" data-toggle="pill" href="#home">ĐIỂM
+                        DANH</a>
+                </li>
+                <li class="nav-item ml-4">
+                    <a class="btn btn_info nav-link" data-toggle="pill" href="#offTime">NGHỈ PHÉP</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <% if(isConfirmed){ %>
+                    <h2 class="text-secondary font-italic ml-5 mt-5">Tháng đã xác nhận !!!</h2>
+                    <% }else{ %>
+                        <%- include('../staff/registerWork.ejs') %>
+                            <%- include('../staff/timeOff.ejs') %>
+                                <% } %>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>

@@ -1,0 +1,35 @@
+<div class="tab-pane container fade offTime" id="offTime">
+    <br>
+    <% if(staffInfo.annualLeave> 0 ) { %>
+
+        <form method="post" action="/time-off">
+            <div class="form-group">
+                <label for="offTime" class=" font-italic ml-2">Chọn ngày nghỉ phép: </label>
+                <input type="text" class="form-control dateeee " placeholder="Chọn nhiều ngày ... " name="offTime"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="reason" class=" font-italic ml-2">Lý do nghỉ nghỉ phép:</label>
+                <textarea class="form-control" name="reason" id="reason" rows="2" cols="30" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="annualLeave" class=" font-italic ml-2">Số ngày nghỉ còn lại: </label>
+                <input type="number" class="form-control" id="annualLeave" value="<%= staffInfo.annualLeave %>"
+                    name="annualLeave" disabled>
+            </div>
+            <div class="form-group">
+                <label for="offHours" class=" font-italic ml-2">Chọn số giờ nghỉ: </label>
+                <input type="number" class="form-control" placeholder="Chọn tối đa 8 giờ . (4h --> 0.5 ngày)"
+                    id="offHours" name="offHours" min="1" max="8" step="1" required>
+            </div>
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <button type="submit" class="btn btn_info btn_form">Gửi</button>
+        </form>
+        <% }else{ %>
+            <h2 class="text-secondary font-italic"> Hết ngày nghỉ phép !!</h2>
+            <% } %>
+
+
+
+
+</div>

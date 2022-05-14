@@ -1,0 +1,129 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navigation.ejs') %>
+        <main class="container ">
+            <div class="covidInfo ">
+                <h2>THÔNG TIN COVID </h2>
+                <form action="/temperature" method="post">
+                    <div class="form-group">
+                        <label for="temp" class="text-secondary font-italic ml-2">Thân nhiệt : </label>
+                        <input type="number" class="form-control" placeholder="Điền giá trị thân nhiệt ... "
+                            name="temperature" required>
+                        <label for="pwd" class="text-secondary font-italic ml-2">Ngày đo thân nhiệt</label>
+                        <input type="datetime-local" class="form-control" name="timeTemperature" required>
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <button type="submit" class="btn btn_info btn_form">Gửi</button>
+                </form>
+                <br>
+                <br>
+                <form action="/vaccine" method="post">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h5>Mũi 1 vaccine</h5>
+                                <label for="pwd" class="text-secondary font-italic ml-2">Loại vaccine</label>
+                                <input type="text" class="form-control" placeholder="Điền tên vaccine ..."
+                                    name="nameVaccine1" required>
+                                <label for="pwd" class="text-secondary font-italic ml-2">Ngày tiêm</label>
+                                <input type="date" class="form-control" name="dateVaccine1" required>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <h5>Mũi 2 vaccine</h5>
+                                <label for="pwd" class="text-secondary font-italic ml-2">Loại vaccine</label>
+                                <input type="text" class="form-control" placeholder="Điền tên vaccine ..."
+                                    name="nameVaccine2" required>
+                                <label for="pwd" class="text-secondary font-italic ml-2">Ngày tiêm</label>
+                                <input type="date" class="form-control" name="dateVaccine2" required>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <button type="submit" class="btn btn_info btn_form">Gửi</button>
+                </form>
+                <br>
+                <br>
+                <form action="/infected" method="post">
+                    <div class="form-group">
+                        <label for="temp" class="text-secondary font-italic ml-2">Ngày nhiễm : </label>
+                        <input type="date" class="form-control" placeholder=" " name="infectedDate">
+                        <label for="pwd" class="text-secondary font-italic ml-2">Ngày khỏi bệnh : </label>
+                        <input type="date" class="form-control" name="cureDate">
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <button type="submit" class="btn btn_info btn_form">Gửi</button>
+                </form>
+
+                <% if (role==='manager' ) { %>
+                    <h3 class="mt-5">THÔNG TIN COVID NHÂN VIÊN</h3>
+                    <% staffs.forEach(staff=> {%>
+                        <span class="row  pl-2 covidInfo_detail mt-4">
+                            <div class="col">
+                                <p class="font-weight-bold">Họ và Tên :</p>
+                                <p class="font-weight-bold">Nhiệt độ : </p>
+                                <p class="font-weight-bold">Vaccine mũi 1: </p>
+                                <p class="font-weight-bold">Vaccine mũi 2:</p>
+                                <p class="font-weight-bold">Ngày bị nhiễm</p>
+                                <p class="font-weight-bold">Ngày khỏi bệnh: </p>
+                            </div>
+                            <div class="col  ">
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= staff.name %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <% if(staff.covidInfo.temperatureInfo.length> 0){ %>
+                                        <span class="font-weight-bold">
+                                            <%= staff.covidInfo.temperatureInfo[0].temperature %> - Ngày :
+                                                <%=
+                                                    moment(staff.covidInfo.temperatureInfo[0].time).format('DD/MM-H:mm')%>
+                                        </span>
+                                        <% }else{ %>
+                                            --
+                                            <% } %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <% if(staff.covidInfo.vaccineInfo.length> 0){ %>
+                                        <span class="font-weight-bold">
+                                            <%= staff.covidInfo.vaccineInfo[0].name %> - Ngày :
+                                                <%= moment(staff.covidInfo.vaccineInfo[0].date).format('DD/MM')%>
+                                        </span>
+                                        <% }else{ %>
+                                            --
+                                            <% } %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <% if(staff.covidInfo.vaccineInfo.length> 0){ %>
+                                        <span class="font-weight-bold">
+                                            <%= staff.covidInfo.vaccineInfo[1].name %> - Ngày :
+                                                <%= moment(staff.covidInfo.vaccineInfo[1].date).format('DD/MM')%>
+                                        </span>
+                                        <% }else{ %>
+                                            --
+                                            <% } %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <% if(staff.covidInfo.infectedInfo.length> 0){ %>
+                                        <span class="font-weight-bold">
+                                            <%= moment(staff.covidInfo.infectedInfo[0].infectedDate).format('DD/MM')%>
+                                        </span>
+                                        <% }else{ %>
+                                            --
+                                            <% } %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <% if(staff.covidInfo.infectedInfo.length> 0){ %>
+                                        <span class="font-weight-bold">
+                                            <%= moment(staff.covidInfo.infectedInfo[0].cureDate).format('DD/MM')%>
+                                        </span>
+                                        <% }else{ %>
+                                            --
+                                            <% } %>
+                                </p>
+                                <a href="/covid/<%=staff._id%>" class="btn btn_info">XUẤT TRANG PDF</a>
+                            </div>
+                        </span>
+                        <% })%>
+                            <% } %>
+            </div>
+
+        </main>
+        <%- include('../includes/end.ejs') %>

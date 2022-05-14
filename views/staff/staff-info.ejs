@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navigation.ejs') %>
+        <main class="container">
+            <form action="/staffInfo" method="post" enctype="multipart/form-data">
+                <h2>THÔNG TIN CÁ NHÂN </h2>
+                <br>
+                <div class="row ">
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <img src="<%= staffInfo.image %> ">
+                        <input type="file" class="form-control" id="image" name="image"
+                            placeholder="Điền đường dẫn ảnh ..." required>
+                        <br>
+                        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                        <button class="btn btn_info w-100" type="submit">Cập nhật ảnh</button>
+
+                    </div>
+                    <div className="col-sm-12 col-md-8 p-2 ">
+                        <div class="row text-left pl-2  staffInfo">
+                            <div class="col-6">
+                                <p class="font-weight-bold">ID :</p>
+                                <p class="font-weight-bold">Họ và Tên :</p>
+                                <p class="font-weight-bold">Ngày sinh : </p>
+                                <p class="font-weight-bold">Hệ số lương :</p>
+                                <p class="font-weight-bold">Ngày vào công ty :</p>
+                                <p class="font-weight-bold">Phòng ban :</p>
+                                <p class="font-weight-bold">Số ngày nghỉ còn lại: </p>
+                            </div>
+                            <div class="col-6  ">
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= staffInfo._id.toString() %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= staffInfo.name %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= moment(staffInfo.doB).format('DD/MM/YYYY') %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= staffInfo.salaryScale %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= moment(staffInfo.startDate).format('DD/MM/YYYY') %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= staffInfo.department %>
+                                </p>
+                                <p class="font-italic text-secondary font-weight-normal ">
+                                    <%= staffInfo.annualLeave %> (ngày)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </main>
+        <%- include('../includes/end.ejs') %>

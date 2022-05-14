@@ -1,0 +1,59 @@
+<div class="tab-pane container active" id="home">
+
+    <form method="post" action="/registerWork">
+        <br>
+        <input type="text" value="<%= staffInfo.name %> " class="btn btn-outline-primary" disabled>
+        <p class="text-secondary">Chọn nơi làm việc :</p>
+        <div class="form-check pl-5">
+            <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="workSpace" value="company" checked="checked"><i
+                    class="fa fa-building"></i> ( Công ty )
+            </label>
+        </div>
+        <div class="form-check pl-5">
+            <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="workSpace" value="home"><i class="fa fa-home"></i> (
+                Nhà )
+            </label>
+        </div>
+
+        <div class="form-check pl-5">
+            <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="workSpace" value="customer"><i
+                    class="fa fa-users"></i> ( Khách hàng )
+            </label>
+        </div>
+        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+        <button class="btn btn_info mt-3 ml-4" type="submit">BẮT ĐẦU LÀM</button>
+    </form>
+    <br>
+    <br>
+    <h3 class="text-title">Danh sách lượt làm việc trong ngày </h3>
+    <p class="ml-5"> <span class="text-secondary font-italic">Số giờ làm :</span>
+        <span class="font-weight-bold">
+            <%= totalTime ? totalTime.toFixed(2) : 0 %> ( giờ )
+        </span>
+    </p>
+    <% if(workTimes.length>0){ %>
+        <% for(let time of workTimes) {%>
+            <div class="card text-left styleBox workToday font-weight-bold ">
+                <div class="card-body">
+
+                    <p class="card-text">
+                        <i
+                            class=" text-info <%= time.workSpace==='home' ? 'fa fa-home' : time.workSpace==='company' ? 'fa fa-building':'fa fa-users'  %> "></i>
+                        <span>
+                            <%= moment(time.startTime).format('DD/MM - h:mm A') %> --
+                                <%= moment(time.endTime).format(' h:mm A') %>
+                        </span>
+                    </p>
+                    <p class="card-text">
+
+                    </p>
+                </div>
+            </div>
+            <br>
+
+            <% } %>
+                <% } %>
+</div>

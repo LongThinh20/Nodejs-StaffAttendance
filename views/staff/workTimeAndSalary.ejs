@@ -1,0 +1,164 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navigation.ejs') %>
+        <main class="container">
+            <h3>THÔNG TIN GIỜ LÀM && LƯƠNG </h3>
+            <br>
+            <% if(role==='staff' ) {%>
+                <h5><span class="font-weight-bold">ID :</span>
+                    <span class="font-italic text-warning">
+                        <%= manager[0]._id.toString() %>
+                    </span>
+                </h5>
+                <h5> <span class="font-weight-bold">Tên quản lý :</span>
+                    <span class="font-italic text-warning">
+                        <%= manager[0].name %>
+                    </span>
+                </h5>
+                <% } %>
+                    <br>
+                    <h4 class="text-title">Danh sách giờ làm</h4>
+                    <% if(workTimes.length> 0 ){ %>
+                        <table class="table styleBox listWorkTime">
+                            <thead>
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>Thời gian bắt đầu </th>
+                                    <th>Thời gian kết thúc</th>
+                                    <th>Nơi làm việc</th>
+                                    <th>Số giờ làm thêm </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(let time of workTimes) {%>
+                                    <tr>
+                                        <td>
+                                            <%= moment(time.endTime).format('DD/MM/YYYY') %>
+                                        </td>
+                                        <td>
+                                            <%= moment(time.startTime).format(' h:mm A') %>
+                                        </td>
+                                        <td>
+                                            <%= moment(time.endTime).format(' h:mm A') %>
+                                        </td>
+                                        <td>
+                                            <%= time.workSpace==='home' ? ' Nhà' : time.workSpace==='company'
+                                                ? ' Công ty' : ' Khách Hàng' %>
+                                        </td>
+                                        <td>
+                                            <% let end=moment(time.endTime) %>
+                                                <% let start=moment(time.startTime) %>
+                                                    <% let duration=moment.duration(end.diff(start))%>
+                                                        <%let times=duration.asHours() %>
+                                                            <%= times<=8? 0 :( times -8).toFixed(2) %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                        <section class="pagination">
+                            <% if(currentPage !==1 && previousPage !==1) {%>
+                                <a href="?page=1">1</a>
+                                <% } %>
+
+                                    <% if(hasPreviousPage){ %>
+                                        <a href="?page=<%= previousPage %> ">
+                                            <%= previousPage %>
+                                        </a>
+                                        <% } %>
+                                            <a href="?page=<%= currentPage %> " class="active">
+                                                <%= currentPage %>
+                                            </a>
+                                            <% if(hasNextPage) {%>
+                                                <a href="?page=<%= nextPage %> ">
+                                                    <%= nextPage %>
+                                                </a>
+                                                <% } %>
+                                                    <% if(lastPage !==currentPage && nextPage !==lastPage){ %>
+                                                        <a href="?page=<%= lastPage %> ">
+                                                            <%= lastPage %>
+                                                        </a>
+                                                        <% } %>
+
+                        </section>
+                        <div>
+                            <form class="form-group form-select-pageSize" action="/pagination" method="post">
+                                <label for="sel1">Chọn số dòng muốn hiển thị:</label>
+                                <select class="form-control select-pageSize mb-4" id="pageSize" name="pageSize">
+                                    <option value="0">--Chọn số dòng--</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                </select>
+                                <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                            </form>
+                        </div>
+                        <% } else {%>
+                            <h5 class="pl-2 font-italic text-warning">Chưa có dữ liệu ...</h5>
+                            <% } %>
+                                <p class="pl-5"><span class="font-italic text-secondary">Tổng giờ đã làm :</span>
+                                    <span class="font-weight-bold">
+                                        <%= totalTime.toFixed(2)%> (giờ)
+                                    </span>
+                                </p>
+
+
+                                <br>
+                                <h4 class="text-title">Danh sách đăng ký nghỉ phép </h4>
+                                <% if(offTimes.length> 0){ %>
+                                    <table class="table styleBox">
+                                        <thead>
+                                            <tr>
+                                                <th>Ngày</th>
+                                                <th>Số giờ đăng kí nghỉ</th>
+                                                <th>Lý do</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(let time of offTimes) {%>
+                                                <tr>
+                                                    <td>
+                                                        <%= (time.offTime) %>
+                                                    </td>
+                                                    <td>
+                                                        <%= time.offHours %>
+                                                    </td>
+                                                    <td>
+                                                        <%= time.reason %>
+                                                    </td>
+
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
+                                    <% }else{ %>
+                                        <h5 class="pl-2 font-italic text-warning">Chưa có dữ liệu ...</h5>
+                                        <% } %>
+                                            <br>
+                                            <h4 class="text-title">Chi tiết Lương</h4>
+                                            <form class="form-group form-select-month" action="/workTime" method="POST">
+                                                <select class="form-control select-month" name="month" id="month">
+                                                    <option value="">-- Chọn tháng muốn xem --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                                <br>
+                                                <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+
+                                            </form>
+                                            <h5 class="ml-4 text-info font-weight-bold">
+                                                <%= salary !==0 ? salary.replace(/\B(?=(\d{3})+(?!\d))/g, " ," )
+                                                    + ' VND' : '' %>
+                                            </h5>
+        </main>
+        <%- include('../includes/end.ejs') %>
