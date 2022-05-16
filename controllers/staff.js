@@ -11,7 +11,7 @@ exports.getStaffInfo = (req, res, next) => {
       pageTitle: "Thông tin nhân viên",
       staffInfo: staffInfo,
       isWork: false,
-      moment
+      moment,
     });
   } catch (err) {
     const error = new Error(err);
